@@ -76,9 +76,12 @@ class Grid:
         spot_width = self.width // self.cols
         spot_height = self.height // self.rows
         x, y = pos
+        if x >= self.width or y >= self.height:
+            return -1, -1
+
         col = x // spot_width
         row = y // spot_height
-        return col, row
+        return row, col
     
     def reset(self) -> None:
         """

@@ -23,7 +23,7 @@ class Spot:
         self.height: int = height
         self.x: int = row * width
         self.y: int = col * height
-        self.color: tuple = COLORS["WHITE"]  # default color is white
+        self.color: tuple = COLORS["GRID_BG"]
         self.neighbors: list = []
         self.total_rows: int = total_rows
 
@@ -74,7 +74,7 @@ class Spot:
         Returns:
             bool: True if the spot is the end node (turquoise), False otherwise.
         """
-        return self.color == COLORS['TURQUOISE']
+        return self.color == COLORS['YELLOW']
 
     # ---- Methods to change the state of the spot (i.e., its setters) ----
     def reset(self) -> None:
@@ -83,7 +83,7 @@ class Spot:
         Returns:
             None
         """
-        self.color = COLORS['WHITE']
+        self.color = COLORS['GRID_BG']
 
     def make_closed(self) -> None:
         """
@@ -131,7 +131,7 @@ class Spot:
         Returns:
             None
         """
-        self.color = COLORS['PURPLE']
+        self.color = COLORS['PATH']
 
     # --- Operators ---
     # "Spot" type is not yet defined because the class will be defined at runtime and will exist only after it is closed (the whole class).
@@ -150,8 +150,27 @@ class Spot:
         Args:
             win (pygame.Surface): The Pygame surface (window) where the spot will be drawn.
         """
-        # draw a rectangle at (x, y) with size (width, width) and color self.color
-        pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
+        padding = 1
+        rect = pygame.Rect(self.x + padding, self.y + padding,
+                           self.width - padding * 2, self.width - padding * 2)
+
+        if self.is_start() or self.is_end():
+            glow_color = COLORS['GLOW_ORANGE'] if self.is_start() else COLORS['GLOW_TURQUOISE']
+
+            for i in range(3, 0, -1):
+                glow_rect = pygame.Rect(self.x + padding - i, self.y + padding - i,
+                                        self.width - padding * 2 + i * 2,
+                                        self.width - padding * 2 + i * 2)
+                alpha_color = tuple(int(c * 0.3) for c in glow_color)
+                pygame.draw.rect(win, alpha_color, glow_rect, border_radius=3)
+
+        if self.color == COLORS['GRID_BG']:
+            pass
+        else:
+            pygame.draw.rect(win, self.color, rect, border_radius=2)
+
+            if self.is_barrier():
+                pygame.draw.rect(win, (50, 50, 60), rect, 1, border_radius=2)
 
     def update_neighbors(self, grid: list[list["Spot"]]) -> None:
         """
