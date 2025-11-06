@@ -1,20 +1,34 @@
 import pygame
 
-# some global constants
-WIDTH = 800
+WIDTH = 1200
 HEIGHT = 800
+GRID_SIZE = 700
 
-# colors.
-# if you find it more suitable, change this dictionary to standalone constants like: RED = (255, 0, 0)
 COLORS = {
-    'RED': (255, 0, 0),           # closed nodes
-    'GREEN': (0, 255, 0),         # open nodes
-    'BLUE': (0, 0, 255),          # start node
-    'YELLOW': (255, 255, 0),      # end node
-    'WHITE': (255, 255, 255),     # unvisited nodes
-    'BLACK': (0, 0, 0),           # barrier
-    'PURPLE': (128, 0, 128),      # path
-    'ORANGE': (255, 165 ,0),      # nodes being considered
-    'GREY': (128, 128, 128),      # grid lines
-    'TURQUOISE': (64, 224, 208)   # neighbor nodes
+    'BACKGROUND': (248, 246, 252),
+    'SIDEBAR': (240, 235, 245),
+    'GRID_BG': (245, 240, 250),
+
+    'BUTTON': (221, 200, 230),
+    'BUTTON_HOVER': (210, 190, 225),
+    'BUTTON_ACTIVE': (185, 155, 220),
+    'TEXT': (70, 60, 90),
+    'ACCENT': (185, 160, 220),
+    'SUCCESS': (180, 235, 210),
+    'DANGER': (255, 180, 185),
+
+    'RED': (255, 175, 175),
+    'GREEN': (190, 245, 210),
+    'BLUE': (185, 215, 255),
+    'YELLOW': (255, 250, 190),
+    'WHITE': (255, 255, 255),
+    'BLACK': (85, 75, 95),
+    'PURPLE': (210, 175, 240),
+    'ORANGE': (255, 210, 170),
+    'GREY': (220, 210, 230),
+    'TURQUOISE': (175, 235, 235),
+    'PATH': (200, 175, 240),
+
+    'GLOW_ORANGE': (255, 220, 190),
+    'GLOW_TURQUOISE': (190, 245, 245),
 }
