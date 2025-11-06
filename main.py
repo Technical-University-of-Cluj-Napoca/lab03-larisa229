@@ -128,16 +128,13 @@ def main():
     win = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Visual Search - AI Path Finding")
 
-    # Fonts
     font = pygame.font.Font(None, 24)
     title_font = pygame.font.Font(None, 36)
 
-    # Create grid
     ROWS = 50
     grid_surface = pygame.Surface((GRID_SIZE, HEIGHT))
     grid = Grid(grid_surface, ROWS, ROWS, GRID_SIZE, HEIGHT)
 
-    # Algorithm buttons
     algorithms = [
         ("BFS", bfs),
         ("DFS", dfs),
@@ -164,7 +161,6 @@ def main():
         )
         buttons.append((button, func))
 
-    # Control buttons
     clear_button = Button(GRID_SIZE + 20, 500, (SIDEBAR_WIDTH - 50) // 2, 35, "Clear", COLORS['DANGER'],
                           (255, 100, 120), COLORS['TEXT'])
     maze_button = Button(GRID_SIZE + 30 + (SIDEBAR_WIDTH - 50) // 2, 500, (SIDEBAR_WIDTH - 50) // 2, 35, "Maze",
@@ -180,14 +176,12 @@ def main():
     run = True
     clock = pygame.time.Clock()
 
-    # Track if we need to redraw sidebar
     sidebar_needs_redraw = True
 
     while run:
         clock.tick(60)
         mouse_pos = pygame.mouse.get_pos()
 
-        # Check button hovers
         hover_changed = False
         for button, _ in buttons:
             old_hover = button.is_hovered
@@ -209,9 +203,8 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
-            # Handle mouse clicks
-            if pygame.mouse.get_pressed()[0]:  # Left click
-                if mouse_pos[0] < GRID_SIZE:  # Click on grid
+            if pygame.mouse.get_pressed()[0]:
+                if mouse_pos[0] < GRID_SIZE:
                     col, row = grid.get_clicked_pos(mouse_pos)
                     if 0 <= row < ROWS and 0 <= col < ROWS:
                         spot = grid.grid[row][col]
@@ -223,8 +216,7 @@ def main():
                             end.make_end()
                         elif spot != end and spot != start:
                             spot.make_barrier()
-                else:  # Click on sidebar
-                    # Check algorithm buttons
+                else:
                     for i, (button, _) in enumerate(buttons):
                         if button.is_clicked(mouse_pos):
                             buttons[selected_algorithm][0].is_active = False
@@ -232,7 +224,6 @@ def main():
                             buttons[selected_algorithm][0].is_active = True
                             sidebar_needs_redraw = True
 
-                    # Check control buttons
                     if clear_button.is_clicked(mouse_pos):
                         start = None
                         end = None
@@ -243,7 +234,7 @@ def main():
                     if maze_button.is_clicked(mouse_pos):
                         generate_random_maze(grid)
 
-            elif pygame.mouse.get_pressed()[2]:  # Right click
+            elif pygame.mouse.get_pressed()[2]:
                 if mouse_pos[0] < GRID_SIZE:
                     col, row = grid.get_clicked_pos(mouse_pos)
                     if 0 <= row < ROWS and 0 <= col < ROWS:
@@ -261,7 +252,6 @@ def main():
                         for spot in row:
                             spot.update_neighbors(grid.grid)
 
-                    # Create a custom draw function that updates the grid surface and blits it
                     def custom_draw():
                         grid.draw()
                         win.blit(grid_surface, (0, 0))
@@ -285,13 +275,10 @@ def main():
                 if event.key == pygame.K_r:
                     generate_random_maze(grid)
 
-        # Draw grid on its surface
         grid.draw()
 
-        # Blit grid surface to main window
         win.blit(grid_surface, (0, 0))
 
-        # Draw sidebar only when needed
         if sidebar_needs_redraw:
             draw_ui(win, [b for b, _ in buttons] + [clear_button, maze_button], selected_algorithm, stats, font,
                          title_font)
